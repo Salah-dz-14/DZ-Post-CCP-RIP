@@ -91,3 +91,35 @@ export const getFullRip = (ccp: string, ripKey: string): string => {
   const padded = padCcp(account);
   return `00799999${padded}${ripKey}`;
 };
+
+/**
+ * Generate standard Algerian IBAN for Algérie Poste
+ * Formula: DZ56 0079 9999 XXXX XXXX XX (where Bank = 007, Branch = 99999, CCP = 10 digits padded, Key = RIP Key)
+ */
+export const getIban = (ccp: string, ripKey: string): string => {
+  const account = cleanAccountNumber(ccp);
+  const padded = padCcp(account);
+  return `DZ56 0079 9999 ${padded.slice(0, 4)} ${padded.slice(4, 8)} ${padded.slice(8, 10)}${ripKey}`;
+};
+
+/**
+ * Official Algérie Poste CCP Withdrawal fee brackets
+ * - 1 to 10,000 DA: 34 DA
+ * - 10,001 to 18,000 DA: 43 DA
+ * - 18,001 to 30,000 DA: 52 DA
+ * - 30,001 to 50,000 DA: 67 DA
+ * - 50,001 to 100,000 DA: 91 DA
+ * - 100,001 to 200,000 DA: 142 DA
+ * - 200,001 DA and above: 243 DA
+ */
+export const calculateWithdrawalFee = (amount: number): number => {
+  if (amount <= 0) return 0;
+  if (amount <= 10000) return 34;
+  if (amount <= 18000) return 43;
+  if (amount <= 30000) return 52;
+  if (amount <= 50000) return 67;
+  if (amount <= 100000) return 91;
+  if (amount <= 200000) return 142;
+  return 243;
+};
+

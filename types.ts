@@ -40,4 +40,20 @@ export interface TranslationStrings {
   aiHelper: string;
   offlineReady: string;
   onlineStatus: string;
+  feeCalculatorTitle: string;
+  amountLabel: string;
+  calculatedFee: string;
+  payoutAmount: string;
+  requiredBalance: string;
+  privacyModalTitle: string;
+  privacyModalText: string;
+  devNameLabel: string;
+  shareBtn: string;
+  bracketInfo: string;
+  backupBtn?: string;
+  restoreBtn?: string;
+  backupSuccess?: string;
+  restoreSuccess?: string;
+  restoreError?: string;
+  backupSectionTitle?: string;
 }
