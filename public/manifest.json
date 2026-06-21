@@ -1,6 +1,6 @@
 {
-  "name": "DZ Post Link - CCP & RIP Algerian Tool",
-  "short_name": "DZ Post Link",
+  "name": "بريدي RIP",
+  "short_name": "بريدي RIP",
   "description": "Calculate CCP and RIP account keys for Algérie Poste offline with ease.",
   "start_url": "/",
   "id": "/",

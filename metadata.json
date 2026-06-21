@@ -1,5 +1,5 @@
 {
-  "name": "DZ Post Link - CCP to RIP Converter",
+  "name": "بريدي RIP",
   "description": "A professional tool to convert Algerian CCP account numbers to RIP, calculate CCP/RIP keys, and manage contacts with persistent storage. Supports Arabic, French, and English.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

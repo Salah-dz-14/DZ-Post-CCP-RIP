@@ -31,7 +31,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     onlineStatus: 'متصل بالإنترنت'
   },
   fr: {
-    title: 'DZ Post RIP',
+    title: 'Baridi RIP',
     subtitle: 'Convertisseur CCP vers RIP et calculateur de clés',
     ccpInputLabel: 'Numéro de compte CCP',
     nameInputLabel: 'Nom (optionnel pour sauvegarde)',
@@ -53,7 +53,7 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     onlineStatus: 'En ligne'
   },
   en: {
-    title: 'Post Link DZ',
+    title: 'Baridi RIP',
     subtitle: 'Algerian CCP to RIP Converter & Key Generator',
     ccpInputLabel: 'CCP Account Number',
     nameInputLabel: 'Name (optional for saving)',
