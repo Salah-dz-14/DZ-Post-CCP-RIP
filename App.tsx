@@ -111,11 +111,8 @@ const App: React.FC = () => {
         <div className="max-w-xl mx-auto flex flex-col items-center text-center relative z-10">
           <div className="flex justify-between items-center w-full mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#FFD700] rounded-xl flex items-center justify-center shadow-lg">
-                <svg className="w-6 h-6 text-[#003366]" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center shadow-lg overflow-hidden border border-white/20">
+                <img src="/app_icon.jpg" alt="DZ Post Link Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <h1 className="text-2xl font-black tracking-tight">{t.title}</h1>
             </div>
