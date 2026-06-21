@@ -2,12 +2,8 @@ const CACHE_NAME = 'dz-post-link-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
-  '/index.tsx',
-  '/App.tsx',
-  '/constants.tsx',
-  '/types.ts',
-  '/components/LanguageSwitcher.tsx',
-  '/components/ResultCard.tsx',
+  '/manifest.json',
+  '/app_icon.jpg',
   '/utils/ccp-logic.ts'
 ];
 

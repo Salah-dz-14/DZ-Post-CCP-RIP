@@ -39,6 +39,19 @@ const App: React.FC = () => {
         console.error("Failed to parse saved accounts", e);
       }
     }
+
+    // Request persistent storage so the browser does not evict local storage on low disk space
+    if (typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist) {
+      navigator.storage.persist().then((persisted) => {
+        if (persisted) {
+          console.log('[PWA] Storage persistence granted.');
+        } else {
+          console.log('[PWA] Storage persistence not granted.');
+        }
+      }).catch((err) => {
+        console.error('[PWA] Error requesting storage persistence:', err);
+      });
+    }
   }, []);
 
   useEffect(() => {
