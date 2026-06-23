@@ -44,7 +44,8 @@ const PrivacyInfo: React.FC<PrivacyInfoProps> = ({ lang }) => {
           <div className="bg-[#003366]/5 rounded-xl p-3 text-[11px] text-[#003366] font-bold flex flex-col gap-1.5">
             <div>🚀 <b>{isArabic ? 'مميزات إضافية ذكية:' : 'Smart Premium Features:'}</b></div>
             <ul className={`list-disc ${isArabic ? 'pr-4 text-right' : 'pl-4 text-left'} space-y-1 font-medium text-gray-500 text-[10.5px]`}>
-              <li>{isArabic ? 'حساب رسمي لرسوم استقطاع السحب حسب سلم بريد الجزائر.' : 'Check official withdrawal fees with visual calculations step-by-step.'}</li>
+              <li>{isArabic ? 'حفظ تلقائي للعمليات الأخيرة في سجل الحسابات المحلي.' : lang === 'fr' ? 'Sauvegarde automatique des calculs récents dans l\'historique local.' : 'Automatic saving of recent runs into your local calculation logs.'}</li>
+              <li>{isArabic ? 'استيراد وتصدير نسخة احتياطية من قائمة الحسابات المفضلة بأمان.' : lang === 'fr' ? 'Importer et exporter des sauvegardes de vos comptes favoris de manière sécurisée.' : 'Safely backup and restore your list of favorite accounts at any time.'}</li>
               <li>{isArabic ? 'مشاركة كارت بيانات الحساب بضغطة زر واحدة عبر برامج المحادثة.' : 'Share beautifully structured account details in one click via WhatsApp/Telegram.'}</li>
               <li>{isArabic ? 'التخزين الآمن محلياً في ذاكرة المتصفح المعزولة.' : 'Data is saved 100% locally in your browser storage. No cloud servers.'}</li>
             </ul>

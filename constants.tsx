@@ -44,7 +44,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     backupSuccess: 'تم تصدير النسخة الاحتياطية بنجاح بنسق ملف JSON !',
     restoreSuccess: 'تمت استعادة الحسابات بنجاح من النسخة الاحتياطية !',
     restoreError: 'عذراً، الملف المحدد غير صالح أو تالف.',
-    backupSectionTitle: 'النسخ الاحتياطي واستعادة البيانات'
+    backupSectionTitle: 'النسخ الاحتياطي واستعادة البيانات',
+    historyLogTitle: 'سجل العمليات الأخير',
+    noHistoryLog: 'لا توجد عمليات سابقة في السجل دائمًا آمن ومحلي.',
+    clearHistoryBtn: 'مسح السجل بالكامل'
   },
   fr: {
     title: 'Baridi RIP',
@@ -82,7 +85,10 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     backupSuccess: 'Sauvegarde exportée avec succès sous format JSON !',
     restoreSuccess: 'Comptes restaurés avec succès depuis la sauvegarde !',
     restoreError: 'Désolé, le fichier sélectionné est invalide ou corrompu.',
-    backupSectionTitle: 'Sauvegarde & Restauration des données'
+    backupSectionTitle: 'Sauvegarde & Restauration des données',
+    historyLogTitle: 'Historique récent',
+    noHistoryLog: 'Aucune conversion récente (100% s@curisé & local).',
+    clearHistoryBtn: 'Effacer l\'historique'
   },
   en: {
     title: 'Baridi RIP',
@@ -120,6 +126,9 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     backupSuccess: 'Backup exported successfully as JSON!',
     restoreSuccess: 'Accounts successfully restored from backup!',
     restoreError: 'Sorry, the selected file is invalid or corrupted.',
-    backupSectionTitle: 'Backup & Restore Data'
+    backupSectionTitle: 'Backup & Restore Data',
+    historyLogTitle: 'Recent Calculations History',
+    noHistoryLog: 'No recent conversions found in your local history.',
+    clearHistoryBtn: 'Clear History'
   }
 };

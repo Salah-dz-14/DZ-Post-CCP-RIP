@@ -12,6 +12,15 @@ export interface SavedAccount {
   createdAt: number;
 }
 
+export interface HistoryItem {
+  id: string;
+  ccp: string;
+  ccpKey: string;
+  ripKey: string;
+  fullRip: string;
+  timestamp: number;
+}
+
 export interface CalculationResult {
   ccp: string;
   ccpKey: string;
@@ -56,4 +65,7 @@ export interface TranslationStrings {
   restoreSuccess?: string;
   restoreError?: string;
   backupSectionTitle?: string;
+  historyLogTitle?: string;
+  noHistoryLog?: string;
+  clearHistoryBtn?: string;
 }

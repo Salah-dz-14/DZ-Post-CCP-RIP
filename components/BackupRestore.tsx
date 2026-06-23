@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { SavedAccount, Language } from '../types';
 import { TRANSLATIONS } from '../constants';
+import { generateId } from '../utils/ccp-logic';
 
 interface BackupRestoreProps {
   lang: Language;
@@ -81,7 +82,7 @@ const BackupRestore: React.FC<BackupRestoreProps> = ({ lang, savedAccounts, onAc
           ) {
             // Reconstruct a strict typed object to ensure perfect consistency
             validAccounts.push({
-              id: item.id || crypto.randomUUID(),
+              id: item.id || generateId(),
               name: item.name || `Account ${item.ccp}`,
               ccp: item.ccp,
               ccpKey: item.ccpKey || '',

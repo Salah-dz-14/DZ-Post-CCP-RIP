@@ -1,21 +1,45 @@
 
 import React, { useState, useEffect } from 'react';
-import { Language, SavedAccount, CalculationResult } from './types';
+import { Language, SavedAccount, CalculationResult, HistoryItem } from './types';
 import { TRANSLATIONS } from './constants';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import ResultCard from './components/ResultCard';
-import FeeCalculator from './components/FeeCalculator';
 import PrivacyInfo from './components/PrivacyInfo';
 import SavedAccountCard from './components/SavedAccountCard';
 import BackupRestore from './components/BackupRestore';
-import { calculateCcpKey, calculateRipKey, getFullRip, padCcp, cleanAccountNumber } from './utils/ccp-logic';
+import HistoryLog from './components/HistoryLog';
+import { calculateCcpKey, calculateRipKey, getFullRip, padCcp, cleanAccountNumber, generateId } from './utils/ccp-logic';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('ar');
   const [ccpInput, setCcpInput] = useState('');
-  const [nameInput, setNameInput] = useState('');
   const [result, setResult] = useState<CalculationResult | null>(null);
-  const [savedAccounts, setSavedAccounts] = useState<SavedAccount[]>([]);
+  const [savedAccounts, setSavedAccounts] = useState<SavedAccount[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('dz_post_saved_accounts');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error("Failed to parse saved accounts", e);
+        }
+      }
+    }
+    return [];
+  });
+  const [calculationHistory, setCalculationHistory] = useState<HistoryItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      const cachedHistory = localStorage.getItem('dz_post_calculation_history');
+      if (cachedHistory) {
+        try {
+          return JSON.parse(cachedHistory);
+        } catch (e) {
+          console.error("Failed to parse cached calculation history", e);
+        }
+      }
+    }
+    return [];
+  });
   const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
 
   const t = TRANSLATIONS[lang];
@@ -35,15 +59,6 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const saved = localStorage.getItem('dz_post_saved_accounts');
-    if (saved) {
-      try {
-        setSavedAccounts(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse saved accounts", e);
-      }
-    }
-
     // Request persistent storage so the browser does not evict local storage on low disk space
     if (typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist) {
       navigator.storage.persist().then((persisted) => {
@@ -71,21 +86,41 @@ const App: React.FC = () => {
     const cKey = calculateCcpKey(ccpInput);
     const rKey = calculateRipKey(ccpInput);
     const rip = getFullRip(ccpInput, rKey);
+    const padded = padCcp(cleaned);
 
-    setResult({
-      ccp: padCcp(cleaned),
+    const calcResult = {
+      ccp: padded,
       ccpKey: cKey,
       ripKey: rKey,
       fullRip: rip
+    };
+
+    setResult(calcResult);
+
+    // Save calculation to local history log
+    const newItem: HistoryItem = {
+      id: generateId(),
+      ccp: padded,
+      ccpKey: cKey,
+      ripKey: rKey,
+      fullRip: rip,
+      timestamp: Date.now()
+    };
+
+    setCalculationHistory(prev => {
+      const filtered = prev.filter(item => item.ccp !== padded);
+      const updated = [newItem, ...filtered].slice(0, 15);
+      localStorage.setItem('dz_post_calculation_history', JSON.stringify(updated));
+      return updated;
     });
   };
 
-  const handleSave = () => {
+  const handleSave = (customName: string) => {
     if (!result) return;
     
     const newAccount: SavedAccount = {
-      id: crypto.randomUUID(),
-      name: nameInput.trim() || `${t.ccpKey} ${result.ccp}`,
+      id: generateId(),
+      name: customName.trim() || `${t.ccpKey} ${result.ccp}`,
       ccp: result.ccp,
       ccpKey: result.ccpKey,
       rip: result.fullRip,
@@ -95,7 +130,6 @@ const App: React.FC = () => {
     };
 
     setSavedAccounts(prev => [newAccount, ...prev]);
-    setNameInput('');
     setResult(null);
     setCcpInput('');
   };
@@ -154,19 +188,6 @@ const App: React.FC = () => {
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-black text-[#003366] mb-2 px-1 uppercase tracking-wider opacity-70">
-                {t.nameInputLabel}
-              </label>
-              <input
-                type="text"
-                value={nameInput}
-                onChange={(e) => setNameInput(e.target.value)}
-                placeholder={t.placeholderName}
-                className="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-4 focus:ring-4 focus:ring-[#FFD700]/10 focus:border-[#FFD700] outline-none transition-all text-sm font-bold"
-              />
-            </div>
-
             <button
               type="submit"
               className="w-full py-4 bg-[#003366] text-white font-black rounded-xl shadow-lg transition-all hover:bg-[#002244] active:scale-[0.98] flex items-center justify-center gap-2 text-lg"
@@ -180,11 +201,37 @@ const App: React.FC = () => {
         </div>
 
         {result && (
-          <ResultCard result={result} lang={lang} onSave={handleSave} accountName={nameInput} />
+          <ResultCard result={result} lang={lang} onSave={handleSave} />
         )}
 
-        {/* Cash Withdrawal Fee Calculator */}
-        <FeeCalculator lang={lang} />
+        {/* Calculation History Log */}
+        <HistoryLog
+          lang={lang}
+          history={calculationHistory}
+          onSelect={(item) => {
+            setCcpInput(item.ccp);
+            setResult({
+              ccp: item.ccp,
+              ccpKey: item.ccpKey,
+              ripKey: item.ripKey,
+              fullRip: item.fullRip
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onDelete={(id) => {
+            setCalculationHistory(prev => {
+              const updated = prev.filter(item => item.id !== id);
+              localStorage.setItem('dz_post_calculation_history', JSON.stringify(updated));
+              return updated;
+            });
+          }}
+          onClear={() => {
+            if (window.confirm(isArabic ? 'هل أنت متأكد من مسح سجل العمليات الأخير بالكامل؟' : lang === 'fr' ? 'Voulez-vous effacer tout l\'historique ?' : 'Are you sure you want to clear the entire history log?')) {
+              setCalculationHistory([]);
+              localStorage.removeItem('dz_post_calculation_history');
+            }
+          }}
+        />
 
         {/* Favorite Saved Accounts */}
         <div id="favorites-section" className="mt-10">
@@ -202,7 +249,12 @@ const App: React.FC = () => {
                   lang={lang}
                   onSelect={() => {
                     setCcpInput(acc.ccp);
-                    setNameInput(acc.name);
+                    setResult({
+                      ccp: acc.ccp,
+                      ccpKey: acc.ccpKey,
+                      ripKey: acc.ripKey,
+                      fullRip: acc.fullRip
+                    });
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   onDelete={() => deleteAccount(acc.id)}
