@@ -186,6 +186,13 @@ const App: React.FC = () => {
                 className="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-4 focus:ring-4 focus:ring-[#FFD700]/10 focus:border-[#FFD700] outline-none transition-all font-mono text-xl font-black text-center text-[#003366]"
                 required
               />
+              <p className="mt-2 text-[10px] md:text-[11px] text-amber-600 font-extrabold px-1 text-center leading-normal">
+                ⚠️ {lang === 'ar' 
+                  ? 'يرجى إدخال أرقام الحساب فقط دون رمز المائل (/) أو رقم المفتاح الإضافي.' 
+                  : lang === 'fr'
+                  ? 'Veuillez saisir uniquement les chiffres du compte sans le symbole (/) ni la clé.'
+                  : 'Please enter only the account digits, excluding the slash (/) symbol or key.'}
+              </p>
             </div>
 
             <button
