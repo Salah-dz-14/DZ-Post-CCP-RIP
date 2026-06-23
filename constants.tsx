@@ -47,7 +47,9 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     backupSectionTitle: 'النسخ الاحتياطي واستعادة البيانات',
     historyLogTitle: 'سجل العمليات الأخير',
     noHistoryLog: 'لا توجد عمليات سابقة في السجل دائمًا آمن ومحلي.',
-    clearHistoryBtn: 'مسح السجل بالكامل'
+    clearHistoryBtn: 'مسح السجل بالكامل',
+    shareAppBtn: 'مشاركة التطبيق',
+    shareAppText: 'تطبيق "بريدي RIP" 🇩🇿 لاستخراج رقم الـ RIP ومفاتيح حساب الحساب الجاري البريدي بنقرة واحدة آمن وسريع 100%! جربه الآن:'
   },
   fr: {
     title: 'Baridi RIP',
@@ -88,7 +90,9 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     backupSectionTitle: 'Sauvegarde & Restauration des données',
     historyLogTitle: 'Historique récent',
     noHistoryLog: 'Aucune conversion récente (100% s@curisé & local).',
-    clearHistoryBtn: 'Effacer l\'historique'
+    clearHistoryBtn: 'Effacer l\'historique',
+    shareAppBtn: 'Partager l\'application',
+    shareAppText: 'Application "Baridi RIP" 🇩🇿 - Convertissez votre compte CCP en RIP et calculez vos clés en un clic, 100% sécurisé ! Essayez-le ici :'
   },
   en: {
     title: 'Baridi RIP',
@@ -129,6 +133,8 @@ export const TRANSLATIONS: Record<Language, TranslationStrings> = {
     backupSectionTitle: 'Backup & Restore Data',
     historyLogTitle: 'Recent Calculations History',
     noHistoryLog: 'No recent conversions found in your local history.',
-    clearHistoryBtn: 'Clear History'
+    clearHistoryBtn: 'Clear History',
+    shareAppBtn: 'Share Application',
+    shareAppText: '"Baridi RIP" App 🇩🇿 - Convert Algerian CCP to RIP and calculate keys safely with one click, 100% secure! Try it here:'
   }
 };

@@ -68,4 +68,6 @@ export interface TranslationStrings {
   historyLogTitle?: string;
   noHistoryLog?: string;
   clearHistoryBtn?: string;
+  shareAppBtn?: string;
+  shareAppText?: string;
 }

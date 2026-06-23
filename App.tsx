@@ -41,6 +41,7 @@ const App: React.FC = () => {
     return [];
   });
   const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  const [copiedAppUrl, setCopiedAppUrl] = useState(false);
 
   const t = TRANSLATIONS[lang];
   const isArabic = lang === 'ar';
@@ -115,6 +116,33 @@ const App: React.FC = () => {
     });
   };
 
+  const handleShareApp = async () => {
+    const appUrl = typeof window !== 'undefined' ? window.location.href : 'https://barid-rip.com';
+    const text = `${t.shareAppText || ''} ${appUrl}`;
+    
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: t.title,
+          text: text,
+          url: appUrl
+        });
+      } catch (err) {
+        if (typeof navigator.clipboard !== 'undefined') {
+          await navigator.clipboard.writeText(text);
+          setCopiedAppUrl(true);
+          setTimeout(() => setCopiedAppUrl(false), 2000);
+        }
+      }
+    } else {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        setCopiedAppUrl(true);
+        setTimeout(() => setCopiedAppUrl(false), 2000);
+      }
+    }
+  };
+
   const handleSave = (customName: string) => {
     if (!result) return;
     
@@ -171,6 +199,40 @@ const App: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex-1 -mt-8 px-4 pb-20 max-w-xl mx-auto w-full relative z-20">
+        {/* Share App Quick Call-to-Action */}
+        <div className="bg-[#FFD700] text-[#003366] rounded-[24px] p-4 mb-4 flex items-center justify-between gap-3 shadow-lg shadow-[#FFD700]/10 border border-[#FFD700]/20 relative overflow-hidden animate-in fade-in duration-300">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full translate-x-8 -translate-y-8 blur-2xl pointer-events-none"></div>
+          <div className="flex items-center gap-3 relative z-10 min-w-0">
+            <span className="text-2xl">📢</span>
+            <div className="min-w-0">
+              <p className="font-black text-xs md:text-sm truncate">
+                {lang === 'ar' ? 'أعجبك التطبيق؟ شاركه مع من تحب!' : lang === 'fr' ? 'Vous aimez l\'application ? Partagez-la !' : 'Love the app? Share it with friends!'}
+              </p>
+              <p className="text-[10px] opacity-80 truncate font-semibold">
+                {lang === 'ar' ? 'ساعد أصدقاءك على استخراج الـ RIP والمفاتيح بضغطة زر' : lang === 'fr' ? 'Aidez vos proches à générer leur RIP facilement' : 'Help others calculate their RIP and keys easily'}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleShareApp}
+            className="px-4 py-2 bg-[#003366] text-white hover:bg-[#002244] font-black rounded-xl text-xs flex items-center gap-1.5 transition-all active:scale-95 shadow-md flex-shrink-0 relative z-10"
+          >
+            {copiedAppUrl ? (
+              <>
+                <span>✓</span>
+                <span>{lang === 'ar' ? 'تم النسخ!' : lang === 'fr' ? 'Copié !' : 'Copied!'}</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8.684 10.742l4.632-2.316a3 3 0 11.517 1.03l-4.632 2.316m0 0a3 3 0 11-.517-1.03l4.632-2.316m-4.632 2.316a3 3 0 11-.517 1.03" />
+                </svg>
+                <span>{t.shareAppBtn || 'Share'}</span>
+              </>
+            )}
+          </button>
+        </div>
+
         <div className="bg-white rounded-[28px] shadow-xl p-7 border border-gray-100">
           <form onSubmit={handleCalculate} className="space-y-5">
             <div>
