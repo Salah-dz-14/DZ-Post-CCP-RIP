@@ -126,8 +126,10 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, lang, onSave }) => {
             onClick={handleShare}
             className="py-3 px-4 bg-gray-50 hover:bg-gray-100 text-[#003366] font-extrabold rounded-xl border-2 border-gray-200/50 transition-all active:scale-[0.97] flex items-center justify-center gap-2 text-sm shadow-sm"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8.684 10.742l4.632-2.316a3 3 0 11.517 1.03l-4.632 2.316m0 0a3 3 0 11-.517-1.03l4.632-2.316m-4.632 2.316a3 3 0 11-.517 1.03" />
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
             </svg>
             {copied === 'share' ? t.copySuccess : t.shareBtn}
           </button>

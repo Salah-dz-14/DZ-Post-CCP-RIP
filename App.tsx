@@ -205,10 +205,10 @@ const App: React.FC = () => {
           <div className="flex items-center gap-3 relative z-10 min-w-0">
             <span className="text-2xl">📢</span>
             <div className="min-w-0">
-              <p className="font-black text-xs md:text-sm truncate">
+              <p className="font-black text-xs md:text-sm whitespace-normal leading-snug">
                 {lang === 'ar' ? 'أعجبك التطبيق؟ شاركه مع من تحب!' : lang === 'fr' ? 'Vous aimez l\'application ? Partagez-la !' : 'Love the app? Share it with friends!'}
               </p>
-              <p className="text-[10px] opacity-80 truncate font-semibold">
+              <p className="text-[10px] opacity-80 whitespace-normal leading-normal font-semibold mt-0.5">
                 {lang === 'ar' ? 'ساعد أصدقاءك على استخراج الـ RIP والمفاتيح بضغطة زر' : lang === 'fr' ? 'Aidez vos proches à générer leur RIP facilement' : 'Help others calculate their RIP and keys easily'}
               </p>
             </div>
@@ -224,8 +224,10 @@ const App: React.FC = () => {
               </>
             ) : (
               <>
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8.684 10.742l4.632-2.316a3 3 0 11.517 1.03l-4.632 2.316m0 0a3 3 0 11-.517-1.03l4.632-2.316m-4.632 2.316a3 3 0 11-.517 1.03" />
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                  <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
+                  <polyline points="16 6 12 2 8 6" />
+                  <line x1="12" y1="2" x2="12" y2="15" />
                 </svg>
                 <span>{t.shareAppBtn || 'Share'}</span>
               </>
