@@ -14,16 +14,70 @@ const HistoryLog: React.FC<HistoryLogProps> = ({ lang, history, onSelect, onDele
   const t = TRANSLATIONS[lang];
   const isArabic = lang === 'ar';
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [sharedId, setSharedId] = useState<string | null>(null);
 
-  const handleCopy = async (text: string, id: string) => {
+  const copyToClipboard = async (text: string): Promise<boolean> => {
     try {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(text);
-        setCopiedId(id);
-        setTimeout(() => setCopiedId(null), 2000);
+        return true;
       }
     } catch (err) {
-      console.error(err);
+      console.warn("Clipboard copy failed, attempting fallback...", err);
+    }
+
+    try {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      const success = document.execCommand("copy");
+      document.body.removeChild(textArea);
+      return !!success;
+    } catch (err) {
+      console.error("Fallback copy failed:", err);
+      return false;
+    }
+  };
+
+  const handleCopy = async (text: string, id: string) => {
+    const success = await copyToClipboard(text);
+    if (success) {
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    }
+  };
+
+  const handleShare = async (item: HistoryItem) => {
+    const shareText = lang === 'ar'
+      ? `📋 تفاصيل الحساب الجاري البريدي (بريد الجزائر):\n\n• رقم الحساب (CCP): ${item.ccp}\n• مفتاح الحساب (Clé CCP): ${item.ccpKey}\n• رقم التعريف الـ (RIP): ${item.fullRip}\n• مفتاح الـ (RIP): ${item.ripKey}\n\n✨ تم الاستخراج محلياً وبأمان عبر تطبيق "بريدي RIP" - المطور Hadjar Salah Eddine`
+      : lang === 'fr'
+      ? `📋 Détails du Compte CCP (Algérie Poste) :\n\n• Numéro CCP : ${item.ccp}\n• Clé CCP : ${item.ccpKey}\n• Numéro RIP : ${item.fullRip}\n• Clé RIP : ${item.ripKey}\n\n✨ Généré localement et en toute sécurité via l'application "Baridi RIP" - Développeur Hadjar Salah Eddine`
+      : `📋 CCP Account Details (Algérie Poste):\n\n• CCP Number: ${item.ccp}\n• CCP Key: ${item.ccpKey}\n• RIP Number: ${item.fullRip}\n• RIP Key: ${item.ripKey}\n\n✨ Generated locally and securely via "Baridi RIP" - Developer Hadjar Salah Eddine`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'بريدي RIP',
+          text: shareText
+        });
+      } catch (err) {
+        const success = await copyToClipboard(shareText);
+        if (success) {
+          setSharedId(item.id);
+          setTimeout(() => setSharedId(null), 2000);
+        }
+      }
+    } else {
+      const success = await copyToClipboard(shareText);
+      if (success) {
+        setSharedId(item.id);
+        setTimeout(() => setSharedId(null), 2000);
+      }
     }
   };
 
@@ -87,6 +141,22 @@ const HistoryLog: React.FC<HistoryLogProps> = ({ lang, history, onSelect, onDele
               </div>
 
               <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handleShare(item)}
+                  className="p-2 rounded-xl bg-gray-50 hover:bg-blue-50 text-gray-400 hover:text-[#003366] transition-all border border-gray-100"
+                  title={t.shareBtn || "Share Account Card"}
+                >
+                  {sharedId === item.id ? (
+                    <span className="text-[10px] text-blue-500 font-extrabold flex items-center justify-center">
+                      ✓
+                    </span>
+                  ) : (
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8.684 10.742l4.632-2.316a3 3 0 11.517 1.03l-4.632 2.316m0 0a3 3 0 11-.517-1.03l4.632-2.316m-4.632 2.316a3 3 0 11-.517 1.03" />
+                    </svg>
+                  )}
+                </button>
+
                 <button
                   onClick={() => handleCopy(item.fullRip, item.id)}
                   className="p-2 rounded-xl bg-gray-50 hover:bg-amber-50 text-gray-400 hover:text-[#003366] transition-all border border-gray-100"

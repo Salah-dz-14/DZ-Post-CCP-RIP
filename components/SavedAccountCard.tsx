@@ -49,6 +49,35 @@ const SavedAccountCard: React.FC<SavedAccountCardProps> = ({ account, lang, onSe
     }
   };
 
+  const handleShare = async () => {
+    const shareText = lang === 'ar'
+      ? `📋 تفاصيل الحساب الجاري البريدي (${account.name}):\n\n• رقم الحساب (CCP): ${account.ccp}\n• مفتاح الحساب (Clé CCP): ${account.ccpKey}\n• رقم التعريف الـ (RIP): ${account.fullRip}\n• مفتاح الـ (RIP): ${account.ripKey}\n\n✨ تم الحفظ والاستخراج محلياً وبأمان عبر تطبيق "بريدي RIP" - المطور Hadjar Salah Eddine`
+      : lang === 'fr'
+      ? `📋 Détails du Compte CCP de (${account.name}) :\n\n• Numéro CCP : ${account.ccp}\n• Clé CCP : ${account.ccpKey}\n• Numéro RIP : ${account.fullRip}\n• Clé RIP : ${account.ripKey}\n\n✨ Enregistré localement et en toute sécurité via l'application "Baridi RIP" - Développeur Hadjar Salah Eddine`
+      : `📋 CCP Account Details of (${account.name}) (Algérie Poste):\n\n• CCP Number: ${account.ccp}\n• CCP Key: ${account.ccpKey}\n• RIP Number: ${account.fullRip}\n• RIP Key: ${account.ripKey}\n\n✨ Saved and generated securely via "Baridi RIP" - Developer Hadjar Salah Eddine`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'بريدي RIP',
+          text: shareText
+        });
+      } catch (err) {
+        const success = await copyToClipboard(shareText);
+        if (success) {
+          setCopiedField('share');
+          setTimeout(() => setCopiedField(null), 2000);
+        }
+      }
+    } else {
+      const success = await copyToClipboard(shareText);
+      if (success) {
+        setCopiedField('share');
+        setTimeout(() => setCopiedField(null), 2000);
+      }
+    }
+  };
+
   const isArabic = lang === 'ar';
 
   return (
@@ -78,6 +107,20 @@ const SavedAccountCard: React.FC<SavedAccountCardProps> = ({ account, lang, onSe
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
+          </button>
+
+          <button
+            onClick={handleShare}
+            className="p-2 rounded-xl bg-amber-50 hover:bg-amber-500 text-amber-600 hover:text-white transition-all active:scale-95 shadow-sm border border-amber-200"
+            title={t.shareBtn || "Share"}
+          >
+            {copiedField === 'share' ? (
+              <span className="text-[10px] font-extrabold text-green-600">✓</span>
+            ) : (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8.684 10.742l4.632-2.316a3 3 0 11.517 1.03l-4.632 2.316m0 0a3 3 0 11-.517-1.03l4.632-2.316m-4.632 2.316a3 3 0 11-.517 1.03" />
+              </svg>
+            )}
           </button>
           
           <button
