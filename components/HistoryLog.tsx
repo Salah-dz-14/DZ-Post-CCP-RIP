@@ -129,14 +129,18 @@ const HistoryLog: React.FC<HistoryLogProps> = ({ lang, history, onSelect, onDele
               >
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-mono text-xs font-black text-[#003366]">
-                    {item.ccp}-{item.ccpKey}
+                    {item.ccp}-{item.ripKey}
                   </span>
                   <span className="text-[9px] text-gray-400 font-bold bg-gray-100 rounded-md px-1.5 py-0.5">
                     {dateStr}
                   </span>
                 </div>
-                <div className="font-mono text-[10.5px] text-gray-500 truncate font-semibold">
-                  RIP: {item.fullRip}
+                <div className="font-mono text-[10.5px] text-gray-500 font-semibold space-y-0.5">
+                  <div className="truncate">RIP: {item.fullRip}</div>
+                  <div className="text-[10px] text-amber-600/90 font-bold flex items-center gap-1">
+                    <span>🗝️ {lang === 'ar' ? 'مفتاح CCP القديم: ' : lang === 'fr' ? 'Clé CCP ancienne : ' : 'Old CCP Key: '}</span>
+                    <span>{item.ccpKey}</span>
+                  </div>
                 </div>
               </div>
 

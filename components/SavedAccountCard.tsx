@@ -140,19 +140,50 @@ const SavedAccountCard: React.FC<SavedAccountCardProps> = ({ account, lang, onSe
       {/* Structured Details Matrix */}
       <div className="space-y-3.5 bg-gray-50/50 rounded-xl p-3 border border-gray-100/50">
         
-        {/* CCP Block */}
+        {/* Account + RIP Key Block (New registration standard) */}
         <div className="flex items-center justify-between text-xs font-semibold">
           <div className="flex flex-col">
-            <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-wide">CCP</span>
+            <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-wide">
+              {lang === 'ar' ? 'رقم الحساب بمفتاح الـ RIP (الجديد)' : lang === 'fr' ? 'Numéro de Compte (Clé RIP)' : 'Account Number (RIP Key)'}
+            </span>
             <span className="font-mono font-extrabold text-[#003366] text-xs">
-              {account.ccp} <span className="opacity-45">/</span> {account.ccpKey}
+              {account.ccp} <span className="opacity-45">/</span> {account.ripKey}
             </span>
           </div>
           <button
-            onClick={() => handleCopy(`${account.ccp} ${account.ccpKey}`, 'ccp')}
+            onClick={() => handleCopy(`${account.ccp} ${account.ripKey}`, 'ccp-rip')}
             className="p-1.5 rounded-lg bg-white hover:bg-amber-50 text-gray-400 hover:text-[#003366] transition-all border border-gray-100 flex items-center justify-center gap-1 active:scale-90"
           >
-            {copiedField === 'ccp' ? (
+            {copiedField === 'ccp-rip' ? (
+              <span className="text-[9px] font-black text-green-500 flex items-center gap-1 px-1">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                </svg>
+                {t.copySuccess || 'تم!'}
+              </span>
+            ) : (
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 00-2 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* CCP Key Block (Old - Additional Info) */}
+        <div className="flex items-center justify-between text-xs font-semibold border-t border-gray-100 pt-2.5">
+          <div className="flex flex-col">
+            <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-wide">
+              {lang === 'ar' ? 'مفتاح الـ CCP القديم (معلومة إضافية)' : lang === 'fr' ? 'Clé CCP ancienne (Info sup)' : 'Old CCP Key (Additional Info)'}
+            </span>
+            <span className="font-mono font-bold text-gray-500 text-xs">
+              {account.ccpKey}
+            </span>
+          </div>
+          <button
+            onClick={() => handleCopy(account.ccpKey, 'ccp-key')}
+            className="p-1.5 rounded-lg bg-white hover:bg-amber-50 text-gray-400 hover:text-[#003366] transition-all border border-gray-100 flex items-center justify-center gap-1 active:scale-90"
+          >
+            {copiedField === 'ccp-key' ? (
               <span className="text-[9px] font-black text-green-500 flex items-center gap-1 px-1">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
