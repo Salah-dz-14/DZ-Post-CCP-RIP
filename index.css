@@ -1,6 +1,25 @@
-body {
-  font-family: 'Inter', 'Cairo', sans-serif;
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Inter', 'Cairo', system-ui, -apple-system, sans-serif;
+  }
 }
+
 .arabic-font {
-  font-family: 'Cairo', sans-serif;
+  font-family: 'Cairo', 'Inter', system-ui, sans-serif;
 }
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+

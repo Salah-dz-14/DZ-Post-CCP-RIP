@@ -14,44 +14,25 @@
     <link rel="apple-touch-icon" href="/app_icon.jpg">
     <link rel="shortcut icon" href="/app_icon.jpg">
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/index.css">
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-[#F8FAFC] text-gray-900 antialiased">
     <div id="root"></div>
 <script type="module" src="/index.tsx"></script>
 <script>
     if ('serviceWorker' in navigator) {
-        const isDev = window.location.hostname === 'localhost' || 
-                      window.location.hostname === '127.0.0.1' || 
-                      window.location.hostname.includes('-dev-') ||
-                      window.location.port !== '';
-
-        if (isDev) {
-            // Unregister any active service workers in development to prevent stale caching issues
-            navigator.serviceWorker.getRegistrations().then((registrations) => {
-                for (let registration of registrations) {
-                    registration.unregister().then((success) => {
-                        if (success) {
-                            console.log('[PWA] Unregistered service worker in dev mode to prevent caching issues.');
-                        }
-                    });
-                }
-            });
-        } else {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then((reg) => {
-                        console.log('[PWA] Service Worker registered successfully:', reg.scope);
-                    })
-                    .catch((err) => {
-                        console.error('[PWA] Service Worker registration failed:', err);
-                    });
-            });
-        }
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((reg) => {
+                    console.log('[PWA] Service Worker registered successfully:', reg.scope);
+                })
+                .catch((err) => {
+                    console.error('[PWA] Service Worker registration error:', err);
+                });
+        });
     }
 </script>
 </body>

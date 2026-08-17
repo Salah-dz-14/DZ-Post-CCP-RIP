@@ -138,4 +138,68 @@ export const generateId = (): string => {
   });
 };
 
+/**
+ * Validate user entered CCP key against the calculated CCP key
+ */
+export const validateEnteredCcpKey = (rawInput: string): { hasUserKey: boolean; isValid: boolean; expectedKey: string; enteredKey: string } => {
+  const parts = rawInput.trim().split(/[\/\-\s]+/);
+  if (parts.length >= 2 && parts[1].replace(/\D/g, '').length > 0) {
+    const mainAcc = parts[0].replace(/\D/g, '');
+    const userKey = parts[1].replace(/\D/g, '').padStart(2, '0');
+    const expectedKey = calculateCcpKey(mainAcc);
+    return {
+      hasUserKey: true,
+      isValid: userKey === expectedKey,
+      expectedKey,
+      enteredKey: userKey
+    };
+  }
+  const mainAcc = cleanAccountNumber(rawInput);
+  return {
+    hasUserKey: false,
+    isValid: true,
+    expectedKey: calculateCcpKey(mainAcc),
+    enteredKey: ''
+  };
+};
+
+/**
+ * Reverse fee calculation: Calculate maximum cash user can withdraw given total available account balance
+ */
+export const calculateMaxWithdrawalFromBalance = (totalBalance: number): { maxCash: number; fee: number } => {
+  if (totalBalance <= 0) return { maxCash: 0, fee: 0 };
+  
+  // Try candidate fees in descending bracket order
+  const brackets = [
+    { threshold: 200000, fee: 243 },
+    { threshold: 100000, fee: 142 },
+    { threshold: 50000, fee: 91 },
+    { threshold: 30000, fee: 67 },
+    { threshold: 18000, fee: 52 },
+    { threshold: 10000, fee: 43 },
+    { threshold: 0, fee: 34 }
+  ];
+
+  for (const b of brackets) {
+    const potentialMax = totalBalance - b.fee;
+    if (potentialMax > b.threshold) {
+      return { maxCash: Math.max(0, potentialMax), fee: b.fee };
+    }
+  }
+
+  const fee = calculateWithdrawalFee(Math.max(0, totalBalance - 34));
+  return { maxCash: Math.max(0, totalBalance - fee), fee };
+};
+
+/**
+ * Edahabia ATM (DAB/GAB) Withdrawal Fee
+ * Algérie Poste ATM: 30 DA fixed + 5 DA stamp = 35 DA per transaction
+ * Interbancaire (CIB/Other Bank ATM): 50 DA fixed + 10 DA = 60 DA per transaction
+ */
+export const calculateEdahabiaAtmFee = (amount: number, isPosteAtm: boolean = true): number => {
+  if (amount <= 0) return 0;
+  return isPosteAtm ? 35 : 60;
+};
+
+
 

@@ -1,10 +1,9 @@
-const CACHE_NAME = 'dz-post-link-cache-v1';
+const CACHE_NAME = 'dz-post-link-cache-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/app_icon.jpg',
-  '/utils/ccp-logic.ts'
+  '/app_icon.jpg'
 ];
 
 // Install Event - Pre-cache critical application shell assets
