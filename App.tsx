@@ -258,10 +258,10 @@ const App: React.FC = () => {
       <main className="flex-1 -mt-8 px-4 pb-20 max-w-xl mx-auto w-full relative z-20">
         
         {/* Universal Navigation Tabs */}
-        <div className="bg-white rounded-2xl p-1.5 shadow-xl border border-gray-100 mb-6 flex justify-between gap-1 text-xs font-black">
+        <div className="bg-white rounded-2xl p-1.5 shadow-xl border border-gray-100 mb-6 flex flex-wrap gap-2 text-xs font-black justify-center md:justify-between">
           <button
             onClick={() => setActiveTab('converter')}
-            className={`flex-1 py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 md:flex-1 min-w-[120px] py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'converter' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
             }`}
           >
@@ -271,7 +271,7 @@ const App: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('fee')}
-            className={`flex-1 py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 md:flex-1 min-w-[110px] py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'fee' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
             }`}
           >
@@ -281,7 +281,7 @@ const App: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('slip')}
-            className={`flex-1 py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 md:flex-1 min-w-[110px] py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
               activeTab === 'slip' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
             }`}
           >
@@ -291,7 +291,7 @@ const App: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('favorites')}
-            className={`flex-1 py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 relative ${
+            className={`flex-1 md:flex-1 min-w-[110px] py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 relative ${
               activeTab === 'favorites' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
             }`}
           >
