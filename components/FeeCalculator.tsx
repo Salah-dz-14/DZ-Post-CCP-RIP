@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../constants';
-import { calculateWithdrawalFee, calculateMaxWithdrawalFromBalance, calculateEdahabiaAtmFee } from '../utils/ccp-logic';
+import { calculateWithdrawalFee, calculateMaxWithdrawalFromBalance, calculateEdahabiaAtmFee, convertAmountToCentimes } from '../utils/ccp-logic';
 
 interface FeeCalculatorProps {
   lang: Language;
@@ -142,6 +142,13 @@ const FeeCalculator: React.FC<FeeCalculatorProps> = ({ lang }) => {
             DZD / دج
           </span>
         </div>
+        {numVal > 0 && (
+          <div className="mt-2 text-center">
+            <span className="inline-block bg-amber-50 border border-amber-200 text-amber-800 text-xs font-black px-3 py-1 rounded-xl shadow-xs">
+              💬 {convertAmountToCentimes(numVal)}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Quick Amount Chips */}

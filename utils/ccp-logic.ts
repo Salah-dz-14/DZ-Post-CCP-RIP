@@ -201,5 +201,29 @@ export const calculateEdahabiaAtmFee = (amount: number, isPosteAtm: boolean = tr
   return isPosteAtm ? 35 : 60;
 };
 
+/**
+ * Convert DZD amount to Algerian Centimes string representation
+ * (1 DZD = 100 Centimes)
+ */
+export const convertAmountToCentimes = (amount: number): string => {
+  if (amount <= 0) return '0 سنتيم';
+  const centimes = amount * 100;
+  
+  if (centimes >= 100000000) {
+    const miliards = (centimes / 100000000).toFixed(2).replace(/\.00$/, '');
+    return `${miliards} مليار سنتيم (${centimes.toLocaleString()} centimes)`;
+  }
+  if (centimes >= 1000000) {
+    const millions = (centimes / 1000000).toFixed(2).replace(/\.00$/, '');
+    return `${millions} مليون سنتيم (${centimes.toLocaleString()} centimes)`;
+  }
+  if (centimes >= 100000) {
+    const hundredsOfThousands = (centimes / 1000).toFixed(0);
+    return `${hundredsOfThousands} ألف سنتيم (${centimes.toLocaleString()} centimes)`;
+  }
+  return `${centimes.toLocaleString()} سنتيم`;
+};
+
+
 
 

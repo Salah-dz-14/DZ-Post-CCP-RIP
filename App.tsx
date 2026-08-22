@@ -257,48 +257,48 @@ const App: React.FC = () => {
       {/* Main Content */}
       <main className="flex-1 -mt-8 px-4 pb-20 max-w-xl mx-auto w-full relative z-20">
         
-        {/* Universal Navigation Tabs */}
-        <div className="bg-white rounded-2xl p-1.5 shadow-xl border border-gray-100 mb-6 flex flex-wrap gap-2 text-xs font-black justify-center md:justify-between">
+        {/* Universal Navigation Tabs with Horizontal Scroll for Mobile */}
+        <div className="bg-white rounded-2xl p-1.5 shadow-xl border border-gray-100 mb-6 flex items-center justify-start sm:justify-between gap-1.5 overflow-x-auto no-scrollbar scroll-smooth text-xs font-black">
           <button
             onClick={() => setActiveTab('converter')}
-            className={`flex-1 md:flex-1 min-w-[120px] py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-shrink-0 sm:flex-1 py-2.5 px-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
               activeTab === 'converter' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
             }`}
           >
-            <span>🧮</span>
-            <span className="truncate">{isArabic ? 'المحول' : 'Converter'}</span>
+            <span className="text-base">🧮</span>
+            <span>{isArabic ? 'المحول' : 'Converter'}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('fee')}
-            className={`flex-1 md:flex-1 min-w-[110px] py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-shrink-0 sm:flex-1 py-2.5 px-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
               activeTab === 'fee' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
             }`}
           >
-            <span>💸</span>
-            <span className="truncate">{isArabic ? 'حاسبة الرسوم' : 'Fee Calc'}</span>
+            <span className="text-base">💸</span>
+            <span>{isArabic ? 'حاسبة الرسوم' : 'Fee Calc'}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('slip')}
-            className={`flex-1 md:flex-1 min-w-[110px] py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-shrink-0 sm:flex-1 py-2.5 px-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
               activeTab === 'slip' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
             }`}
           >
-            <span>📄</span>
-            <span className="truncate">{isArabic ? 'شهادة RIP' : 'RIP Slip'}</span>
+            <span className="text-base">📄</span>
+            <span>{isArabic ? 'شهادة RIP' : 'RIP Slip'}</span>
           </button>
 
           <button
             onClick={() => setActiveTab('favorites')}
-            className={`flex-1 md:flex-1 min-w-[110px] py-3 px-2 rounded-xl transition-all flex items-center justify-center gap-1.5 relative ${
+            className={`flex-shrink-0 sm:flex-1 py-2.5 px-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap relative ${
               activeTab === 'favorites' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
             }`}
           >
-            <span>⭐</span>
-            <span className="truncate">{isArabic ? 'المفضلة' : 'Saved'}</span>
+            <span className="text-base">⭐</span>
+            <span>{isArabic ? 'المفضلة' : 'Saved'}</span>
             {savedAccounts.length > 0 && (
-              <span className="w-4 h-4 rounded-full bg-[#FFD700] text-[#003366] text-[9px] font-black flex items-center justify-center ml-0.5">
+              <span className="w-4.5 h-4.5 rounded-full bg-[#FFD700] text-[#003366] text-[10px] font-black flex items-center justify-center ml-0.5">
                 {savedAccounts.length}
               </span>
             )}
