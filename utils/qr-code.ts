@@ -6,14 +6,11 @@ export function generateQrSvg(text: string, size = 180): string {
   const modulesCount = qr.modules.size;
   const quietZone = 4;
   const viewBoxSize = modulesCount + quietZone * 2;
-  const cellSize = size / viewBoxSize;
   let rects = '';
   for (let row = 0; row < modulesCount; row++) {
     for (let col = 0; col < modulesCount; col++) {
       if (qr.modules.get(row, col)) {
-        const x = ((col + quietZone) * cellSize).toFixed(2);
-        const y = ((row + quietZone) * cellSize).toFixed(2);
-        rects += `<rect x="${x}" y="${y}" width="${cellSize.toFixed(2)}" height="${cellSize.toFixed(2)}" fill="#003366" />`;
+        rects += `<rect x="${col + quietZone}" y="${row + quietZone}" width="1" height="1" fill="#003366" />`;
       }
     }
   }
