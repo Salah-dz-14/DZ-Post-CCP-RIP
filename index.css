@@ -15,6 +15,23 @@
     background: white !important;
     color: black !important;
   }
+  body * {
+    visibility: hidden !important;
+  }
+  .print-certificate,
+  .print-certificate * {
+    visibility: visible !important;
+  }
+  .print-certificate {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
   .no-print {
     display: none !important;
   }

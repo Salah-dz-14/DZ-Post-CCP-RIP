@@ -56,7 +56,7 @@ const RipCertificate: React.FC<RipCertificateProps> = ({ result, lang, accountNa
       </div>
 
       {/* Printable Certificate Card Component */}
-      <div className="bg-gradient-to-br from-[#003366] to-[#002244] text-white rounded-3xl p-6 shadow-2xl relative overflow-hidden border border-white/10">
+      <div className="print-certificate bg-gradient-to-br from-[#003366] to-[#002244] text-white rounded-3xl p-6 shadow-2xl relative overflow-hidden border border-white/10">
         {/* Subtle background stamps */}
         <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-36 h-36 bg-[#FFD700]/10 rounded-full blur-2xl pointer-events-none"></div>
