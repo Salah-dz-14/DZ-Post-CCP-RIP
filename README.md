@@ -18,7 +18,6 @@ The application is built using **React 19**, **Vite**, and **Tailwind CSS**. It 
 * **RIP Key Generation**: Generation of the 2-digit RIP verification key required for bank transfers (ISO 7064 Modulo 97 algorithm).
 * **Full RIP String Generation**: Compiles the official 20-digit RIP number formatted as:
   `007 99999 [10-Digit CCP] [2-Digit RIP Key]`
-* **International IBAN Generation**: Compiles the official Algerian IBAN `DZ56 0079 9999 XXXX XXXX XX`.
 
 ### 3. CCP Cash Withdrawal & Edahabia ATM Fee Calculator
 * **Official Algérie Poste Tax Brackets**: Calculates exact withdrawal fees for post office counter transactions.
@@ -60,7 +59,7 @@ The production build currently completes successfully. Backup imports reject ove
 
 ### Review checklist for Algérie Poste
 
-1. Confirm the CCP, RIP, IBAN, and fee algorithms against current official documentation.
+1. Confirm the CCP, RIP, and fee algorithms against current official documentation.
 2. Review the privacy behavior in a clean browser profile with network monitoring enabled.
 3. Test the PWA on supported mobile browsers, including offline startup and service-worker updates.
 4. Confirm the legal wording, branding, and publishing requirements before public distribution.
@@ -122,7 +121,7 @@ npm run build
 │   ├── RipCertificate.tsx    # Printable slip & offline QR code renderer
 │   └── SavedAccountCard.tsx  # Favorite account bookmarks card
 ├── utils/               # Algorithmic & offline modules
-│   ├── ccp-logic.ts          # Modulo 97 math, IBAN, and fee calculations
+│   ├── ccp-logic.ts          # CCP/RIP algorithms and fee calculations
 │   └── qr-code.ts            # Pure offline SVG QR Code generator
 ├── App.tsx              # Application shell & tab navigation hub
 ├── constants.tsx        # Localized dictionaries (AR, FR, EN)

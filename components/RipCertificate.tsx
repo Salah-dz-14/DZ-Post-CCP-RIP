@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { CalculationResult, Language } from '../types';
 import { TRANSLATIONS } from '../constants';
-import { getIban } from '../utils/ccp-logic';
 import { generateQrSvg } from '../utils/qr-code';
 
 interface RipCertificateProps {
@@ -13,20 +12,10 @@ interface RipCertificateProps {
 const RipCertificate: React.FC<RipCertificateProps> = ({ result, lang, accountName = '' }) => {
   const t = TRANSLATIONS[lang];
   const isArabic = lang === 'ar';
-  const iban = getIban(result.ccp, result.ripKey);
 
   const [holderName, setHolderName] = useState<string>(accountName);
-  const [copiedIban, setCopiedIban] = useState<boolean>(false);
 
-  const qrSvgHtml = generateQrSvg(`DZ5600799999${result.ccp}${result.ripKey}`, 160);
-
-  const handleCopyIban = async () => {
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(iban);
-      setCopiedIban(true);
-      setTimeout(() => setCopiedIban(false), 2000);
-    }
-  };
+  const qrSvgHtml = generateQrSvg(result.fullRip, 160);
 
   const handlePrint = () => {
     window.print();
@@ -123,23 +112,6 @@ const RipCertificate: React.FC<RipCertificateProps> = ({ result, lang, accountNa
               </span>
             </div>
 
-            <div>
-              <span className="block text-[9px] uppercase tracking-widest text-amber-300/80 font-bold mb-0.5">
-                IBAN International Format
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-blue-100 tracking-wide select-all">
-                  {iban}
-                </span>
-                <button
-                  onClick={handleCopyIban}
-                  className="p-1 rounded-md bg-white/10 hover:bg-white/20 text-white text-[10px] no-print transition-all"
-                  title="Copy IBAN"
-                >
-                  {copiedIban ? '✓' : '📋'}
-                </button>
-              </div>
-            </div>
           </div>
 
           {/* QR Code Container */}

@@ -93,16 +93,6 @@ export const getFullRip = (ccp: string, ripKey: string): string => {
 };
 
 /**
- * Generate standard Algerian IBAN for Algérie Poste
- * Formula: DZ56 0079 9999 XXXX XXXX XX (where Bank = 007, Branch = 99999, CCP = 10 digits padded, Key = RIP Key)
- */
-export const getIban = (ccp: string, ripKey: string): string => {
-  const account = cleanAccountNumber(ccp);
-  const padded = padCcp(account);
-  return `DZ56 0079 9999 ${padded.slice(0, 4)} ${padded.slice(4, 8)} ${padded.slice(8, 10)}${ripKey}`;
-};
-
-/**
  * Official Algérie Poste CCP Withdrawal fee brackets
  * - 1 to 10,000 DA: 34 DA
  * - 10,001 to 18,000 DA: 43 DA
