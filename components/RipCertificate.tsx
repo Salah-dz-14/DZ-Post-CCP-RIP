@@ -146,7 +146,7 @@ const RipCertificate: React.FC<RipCertificateProps> = ({ result, lang, accountNa
           <div className="flex flex-col items-center justify-center p-3 bg-white rounded-2xl shadow-inner border border-white/20">
             <div dangerouslySetInnerHTML={{ __html: qrSvgHtml }} className="w-28 h-28" />
             <span className="text-[9px] font-extrabold text-[#003366] mt-1 font-mono text-center">
-              OFFLINE QR-STYLE
+              OFFLINE QR CODE
             </span>
           </div>
         </div>

@@ -28,7 +28,7 @@ The application is built using **React 19**, **Vite**, and **Tailwind CSS**. It 
 
 ### 4. Printable RIP Slip & Offline Vector QR Code
 * **Official Slip Preview**: Generates an Algérie Poste styled digital certificate with custom account holder name.
-* **Pure Offline QR-Style SVG**: Renders a deterministic local visual containing account details without sending data to external APIs. It is not a standards-compliant QR encoder and must not be relied on for scanning.
+* **Pure Offline QR SVG**: Generates a standards-compliant, scannable QR code locally without sending account details to external APIs.
 * **One-Click Printing / PDF Export**: Built-in support for printing clean physical slips or saving as PDF via `window.print()`.
 
 ### 5. 100% Offline PWA & Isolated Storage
