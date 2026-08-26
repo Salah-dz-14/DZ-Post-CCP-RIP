@@ -32,7 +32,8 @@ const App: React.FC = () => {
       const saved = localStorage.getItem('dz_post_saved_accounts');
       if (saved) {
         try {
-          return JSON.parse(saved);
+          const parsed = JSON.parse(saved);
+          return Array.isArray(parsed) ? parsed : [];
         } catch (e) {
           console.error("Failed to parse saved accounts", e);
         }
@@ -46,7 +47,8 @@ const App: React.FC = () => {
       const cachedHistory = localStorage.getItem('dz_post_calculation_history');
       if (cachedHistory) {
         try {
-          return JSON.parse(cachedHistory);
+          const parsed = JSON.parse(cachedHistory);
+          return Array.isArray(parsed) ? parsed : [];
         } catch (e) {
           console.error("Failed to parse cached calculation history", e);
         }
@@ -96,7 +98,11 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('dz_post_saved_accounts', JSON.stringify(savedAccounts));
+    try {
+      localStorage.setItem('dz_post_saved_accounts', JSON.stringify(savedAccounts.slice(0, 100)));
+    } catch (e) {
+      console.error('Failed to save accounts locally', e);
+    }
   }, [savedAccounts]);
 
   const keyValidation = validateEnteredCcpKey(ccpInput);

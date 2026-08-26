@@ -1,13 +1,12 @@
 /**
  * Pure Offline QR Code SVG Generator
  * Generates an SVG string or matrix for text input without external network requests.
- * Uses a lightweight QR matrix algorithm suitable for financial strings (RIP, CCP, IBAN).
+ * Uses a lightweight deterministic QR-style matrix for displaying financial strings (RIP, CCP, IBAN).
  */
 
 // Basic QR Matrix generator for alphanumeric & numeric strings
 export function generateQrSvg(text: string, size = 180): string {
-  // Simple deterministic QR-style 2D code encoding for offline rendering
-  // Produces a valid, scannable-style visual matrix SVG based on hash & data bits
+  // Simple deterministic QR-style 2D visual for offline rendering.
   const modulesCount = 25; // 25x25 grid (Version 2 QR)
   const matrix: boolean[][] = Array(modulesCount).fill(false).map(() => Array(modulesCount).fill(false));
 

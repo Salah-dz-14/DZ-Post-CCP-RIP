@@ -1,8 +1,8 @@
-# Baridi RIP 🇩🇿 (بريدي RIP)
+# Baridi RIP (بريدي RIP)
 
 **Baridi RIP** is a highly polished, feature-rich Progressive Web Application (PWA) designed for Algerian postal account holders (Algérie Poste). It allows users to instantly and safely convert their **CCP** (Compte Courant Postal) account numbers into a standard **RIP** (Relevé d'Identité Postale) number, calculate verification keys, simulate cash withdrawal fees, and generate printable RIP certificates with offline QR codes—completely client-side.
 
-The application is built using **React 19**, **Vite**, and **Tailwind CSS**, adhering to the highest standards of user experience, speed, privacy, and full offline capability.
+The application is built using **React 19**, **Vite**, and **Tailwind CSS**. It is an independent utility and is not an official Algérie Poste service or a replacement for an official account statement.
 
 ---
 
@@ -28,17 +28,44 @@ The application is built using **React 19**, **Vite**, and **Tailwind CSS**, adh
 
 ### 4. Printable RIP Slip & Offline Vector QR Code
 * **Official Slip Preview**: Generates an Algérie Poste styled digital certificate with custom account holder name.
-* **Pure Offline SVG QR Code**: Renders a vector QR code containing account details without sending data to external APIs.
+* **Pure Offline QR-Style SVG**: Renders a deterministic local visual containing account details without sending data to external APIs. It is not a standards-compliant QR encoder and must not be relied on for scanning.
 * **One-Click Printing / PDF Export**: Built-in support for printing clean physical slips or saving as PDF via `window.print()`.
 
 ### 5. 100% Offline PWA & Isolated Storage
 * **Service Worker Caching**: Fully installable as a Progressive Web App (PWA) on mobile and desktop home screens. Works 100% offline without active internet.
-* **Local Storage Persistence**: Calculation history and bookmarked favorite accounts are saved securely in local storage. Requests persistent storage permission (`navigator.storage.persist()`).
+* **Local Storage Persistence**: Calculation history and bookmarked favorite accounts are saved in the browser's local storage. The data is not encrypted by this app; use device locking and browser profiles appropriately.
 * **Zero Server Transmission**: No external databases, server APIs, or tracking analytics. Financial details never leave the browser.
 
 ### 6. Secure Backup & Recovery Engine
 * **JSON Export**: Download saved accounts to an offline JSON backup file.
-* **JSON Import**: Restore saved accounts from a backup file on any device.
+* **JSON Import**: Restore saved accounts from a backup file on any device. Imports are size-limited, count-limited, normalized, and recalculated locally.
+
+## Security and Privacy
+
+* Calculations, history, favorites, and QR data are processed in the browser.
+* The application does not request a CCP number from a backend, does not include an analytics service, and does not load third-party fonts.
+* Backup files contain account information in plain JSON. Treat them like sensitive financial documents and delete or protect them after transfer.
+* Browser local storage is not a password vault. Other software or browser extensions with access to the device/profile may be able to read it.
+* Never use a generated RIP as proof of account ownership. Confirm account details against an official Algérie Poste document before making a transfer.
+* The app does not process passwords, card PINs, SMS codes, or payment credentials. Never enter those values here.
+
+### Security checks performed
+
+```bash
+npm install
+npm run build
+```
+
+The production build currently completes successfully. Backup imports reject oversized files, excessive account counts, malformed records, and inconsistent calculated values. This repository does not claim formal certification or a security audit.
+
+### Review checklist for Algérie Poste
+
+1. Confirm the CCP, RIP, IBAN, and fee algorithms against current official documentation.
+2. Review the privacy behavior in a clean browser profile with network monitoring enabled.
+3. Test the PWA on supported mobile browsers, including offline startup and service-worker updates.
+4. Confirm the legal wording, branding, and publishing requirements before public distribution.
+
+For responsible disclosure, contact the developer through the address shown in the in-app privacy section. Do not send real account numbers in bug reports.
 
 ---
 
@@ -105,4 +132,4 @@ npm run build
 
 ---
 
-*Developed with ❤️ for the Algerian web utility ecosystem.*
+*Developed for the Algerian web utility ecosystem.*

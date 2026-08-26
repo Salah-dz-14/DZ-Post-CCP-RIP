@@ -41,11 +41,11 @@ self.addEventListener('activate', (event) => {
 // Fetch Event - Stale-While-Revalidate strategy for optimal performance and offline capability
 self.addEventListener('fetch', (event) => {
   // Only handle local HTTP/HTTPS requests (avoid chrome-extension issues)
-  if (!event.request.url.startsWith(self.location.origin) && !event.request.url.startsWith('http')) {
+  if (!event.request.url.startsWith(self.location.origin)) {
     return;
   }
 
-  // Handle caching for font resources, ESM modules, and local assets
+  // Cache same-origin application resources only.
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -71,13 +71,9 @@ self.addEventListener('fetch', (event) => {
             return networkResponse;
           }
 
-          // Dynamically cache successful requests to esm.sh, Google Fonts, and local assets
+          // Dynamically cache successful same-origin assets.
           const url = new URL(event.request.url);
-          const shouldCache = 
-            url.origin === self.location.origin || 
-            url.hostname.includes('esm.sh') || 
-            url.hostname.includes('fonts.googleapis.com') || 
-            url.hostname.includes('fonts.gstatic.com');
+          const shouldCache = url.origin === self.location.origin;
 
           if (shouldCache) {
             const responseToCache = networkResponse.clone();

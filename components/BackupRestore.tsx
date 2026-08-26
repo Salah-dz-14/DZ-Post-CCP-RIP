@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { SavedAccount, Language } from '../types';
 import { TRANSLATIONS } from '../constants';
-import { generateId } from '../utils/ccp-logic';
+import { calculateCcpKey, calculateRipKey, generateId, padCcp } from '../utils/ccp-logic';
 
 interface BackupRestoreProps {
   lang: Language;
@@ -15,6 +15,8 @@ const BackupRestore: React.FC<BackupRestoreProps> = ({ lang, savedAccounts, onAc
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const isArabic = lang === 'ar';
+  const MAX_BACKUP_BYTES = 1024 * 1024;
+  const MAX_ACCOUNTS = 100;
 
   const handleExport = () => {
     try {
@@ -61,6 +63,15 @@ const BackupRestore: React.FC<BackupRestoreProps> = ({ lang, savedAccounts, onAc
     if (!files || files.length === 0) return;
 
     const file = files[0];
+    if (file.size > MAX_BACKUP_BYTES) {
+      setStatus({
+        type: 'error',
+        message: isArabic ? 'حجم الملف كبير جداً.' : lang === 'fr' ? 'Le fichier est trop volumineux.' : 'The backup file is too large.'
+      });
+      e.target.value = '';
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
@@ -71,27 +82,35 @@ const BackupRestore: React.FC<BackupRestoreProps> = ({ lang, savedAccounts, onAc
           throw new Error('Not an array');
         }
 
-        // Validate structure of parsed objects
+        if (parsed.length > MAX_ACCOUNTS) {
+          throw new Error('Too many accounts');
+        }
+
         const validAccounts: SavedAccount[] = [];
         for (const item of parsed) {
-          if (
-            typeof item === 'object' && 
-            item !== null &&
-            typeof item.ccp === 'string' &&
-            (typeof item.fullRip === 'string' || typeof item.rip === 'string')
-          ) {
-            // Reconstruct a strict typed object to ensure perfect consistency
-            validAccounts.push({
-              id: item.id || generateId(),
-              name: item.name || `Account ${item.ccp}`,
-              ccp: item.ccp,
-              ccpKey: item.ccpKey || '',
-              rip: item.rip || item.fullRip || '',
-              ripKey: item.ripKey || '',
-              fullRip: item.fullRip || item.rip || '',
-              createdAt: typeof item.createdAt === 'number' ? item.createdAt : Date.now()
-            });
-          }
+          if (typeof item !== 'object' || item === null || Array.isArray(item)) continue;
+
+          const candidate = item as Partial<SavedAccount>;
+          if (typeof candidate.ccp !== 'string' || !/^\d{1,10}$/.test(candidate.ccp)) continue;
+
+          const ccp = padCcp(candidate.ccp);
+          const ccpKey = calculateCcpKey(ccp);
+          const ripKey = calculateRipKey(ccp);
+          const fullRip = `00799999${ccp}${ripKey}`;
+          const name = typeof candidate.name === 'string' ? candidate.name.trim().slice(0, 100) : '';
+
+          validAccounts.push({
+            id: typeof candidate.id === 'string' && candidate.id.length <= 100 ? candidate.id : generateId(),
+            name: name || `Account ${ccp}`,
+            ccp,
+            ccpKey,
+            rip: fullRip,
+            ripKey,
+            fullRip,
+            createdAt: typeof candidate.createdAt === 'number' && Number.isFinite(candidate.createdAt)
+              ? candidate.createdAt
+              : Date.now()
+          });
         }
 
         if (validAccounts.length === 0) {
