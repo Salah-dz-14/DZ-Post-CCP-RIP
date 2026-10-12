@@ -280,7 +280,7 @@ const App: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 -mt-8 px-4 pb-28 max-w-xl mx-auto w-full relative z-20">
+      <main className="flex-1 -mt-8 px-4 pb-36 max-w-xl mx-auto w-full relative z-20">
         
         {/* TAB 1: CONVERTER */}
         {activeTab === 'converter' && (
@@ -527,40 +527,131 @@ const App: React.FC = () => {
         <PrivacyInfo lang={lang} />
       </main>
 
+      {/* Liquid Glass Bottom Navigation */}
       <nav
         aria-label={isArabic ? 'التنقل الرئيسي' : 'Main navigation'}
-        className={`no-print fixed inset-x-0 bottom-0 z-50 border-t border-gray-100 bg-white/95 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] backdrop-blur transition-transform duration-300 ${
+        className={`no-print fixed inset-x-0 bottom-0 z-50 transition-transform duration-500 ease-in-out ${
           isBottomNavVisible ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
+        {/* Outer glow / ambient light layer */}
+        <div className="absolute inset-x-4 -top-3 h-6 rounded-full bg-[#003366]/20 blur-xl pointer-events-none" />
+
+        {/* Glass container */}
         <div
-          className="mx-auto grid max-w-xl grid-cols-4 gap-1 px-2 pt-2"
-          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 0.5rem)' }}
+          className="relative mx-4 mb-3 rounded-[28px] overflow-hidden"
+          style={{
+            background: 'linear-gradient(145deg, rgba(0,51,102,0.88) 0%, rgba(0,34,68,0.95) 100%)',
+            backdropFilter: 'blur(24px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+            boxShadow: '0 8px 32px rgba(0,51,102,0.45), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.2)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            paddingBottom: 'env(safe-area-inset-bottom)',
+          }}
         >
-          {([
-            { id: 'converter', icon: '🧮', label: isArabic ? 'المحول' : 'Converter' },
-            { id: 'fee', icon: '💸', label: isArabic ? 'حاسبة الرسوم' : 'Fee Calc' },
-            { id: 'slip', icon: '📄', label: isArabic ? 'شهادة RIP' : 'RIP Slip' },
-            { id: 'favorites', icon: '⭐', label: isArabic ? 'المفضلة' : 'Saved' }
-          ] as const).map(({ id, icon, label }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setActiveTab(id)}
-              aria-current={activeTab === id ? 'page' : undefined}
-              className={`relative flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 text-[10px] font-black leading-tight transition-colors ${
-                activeTab === id ? 'text-[#003366]' : 'text-gray-500 hover:text-[#003366]'
-              }`}
-            >
-              <span className="text-lg leading-none">{icon}</span>
-              <span className="whitespace-nowrap">{label}</span>
-              {id === 'favorites' && savedAccounts.length > 0 && (
-                <span className="absolute right-1/4 top-0 h-4 min-w-4 rounded-full bg-[#FFD700] px-1 text-[10px] font-black leading-4 text-[#003366]">
-                  {savedAccounts.length}
-                </span>
-              )}
-            </button>
-          ))}
+          {/* Inner highlight rim */}
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+
+          <div className="grid grid-cols-4 gap-1 px-2 py-2 max-w-xl mx-auto">
+            {([
+              {
+                id: 'converter' as const,
+                label: isArabic ? 'المحول' : 'Converter',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                    <rect x="4" y="3" width="6" height="6" rx="1" />
+                    <rect x="14" y="3" width="6" height="6" rx="1" />
+                    <rect x="4" y="13" width="6" height="6" rx="1" />
+                    <path d="M14 16h6M17 13v6" />
+                  </svg>
+                ),
+              },
+              {
+                id: 'fee' as const,
+                label: isArabic ? 'الرسوم' : 'Fees',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M9 9.5A2.5 2.5 0 0 1 14.5 12a2.5 2.5 0 0 1-2.5 2.5M12 7v1M12 16v1" />
+                    <path d="M9.5 14.5S10.5 15 12 15" />
+                  </svg>
+                ),
+              },
+              {
+                id: 'slip' as const,
+                label: isArabic ? 'شهادة' : 'RIP Slip',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <rect x="8" y="12" width="3" height="3" />
+                    <rect x="13" y="12" width="3" height="3" />
+                    <rect x="8" y="17" width="3" height="3" />
+                    <rect x="13" y="17" width="3" height="3" />
+                  </svg>
+                ),
+              },
+              {
+                id: 'favorites' as const,
+                label: isArabic ? 'المفضلة' : 'Saved',
+                icon: (
+                  <svg viewBox="0 0 24 24" fill={activeTab === 'favorites' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                  </svg>
+                ),
+              },
+            ]).map(({ id, icon, label }) => {
+              const isActive = activeTab === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => setActiveTab(id)}
+                  aria-current={isActive ? 'page' : undefined}
+                  style={{
+                    transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  }}
+                  className={`relative flex flex-col items-center justify-center gap-1 rounded-[18px] px-1 py-2.5 text-[10px] font-black leading-tight ${
+                    isActive
+                      ? 'text-[#003366]'
+                      : 'text-white/55 hover:text-white/80'
+                  }`}
+                >
+                  {/* Active pill background */}
+                  {isActive && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 rounded-[18px]"
+                      style={{
+                        background: 'linear-gradient(145deg, #FFD700 0%, #FFC200 100%)',
+                        boxShadow: '0 4px 14px rgba(255,215,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4)',
+                      }}
+                    />
+                  )}
+
+                  {/* Icon */}
+                  <span className="relative z-10 leading-none">{icon}</span>
+
+                  {/* Label */}
+                  <span className="relative z-10 whitespace-nowrap">{label}</span>
+
+                  {/* Badge */}
+                  {id === 'favorites' && savedAccounts.length > 0 && (
+                    <span
+                      className="absolute -top-1 -right-1 h-4 min-w-4 rounded-full px-1 text-[9px] font-black leading-4 z-20"
+                      style={{
+                        background: isActive ? '#003366' : '#FFD700',
+                        color: isActive ? '#FFD700' : '#003366',
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                      }}
+                    >
+                      {savedAccounts.length}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </nav>
     </div>
