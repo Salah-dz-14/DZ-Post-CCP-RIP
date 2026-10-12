@@ -26,6 +26,7 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isAppInstalled, setIsAppInstalled] = useState(false);
+  const [isBottomNavVisible, setIsBottomNavVisible] = useState(true);
 
   const [savedAccounts, setSavedAccounts] = useState<SavedAccount[]>(() => {
     if (typeof window !== 'undefined') {
@@ -95,6 +96,24 @@ const App: React.FC = () => {
     if (typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist) {
       navigator.storage.persist().catch(() => {});
     }
+  }, []);
+
+  useEffect(() => {
+    let previousScrollY = window.scrollY;
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 80 || currentScrollY < previousScrollY - 8) {
+        setIsBottomNavVisible(true);
+      } else if (currentScrollY > previousScrollY + 8) {
+        setIsBottomNavVisible(false);
+      }
+
+      previousScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -261,56 +280,8 @@ const App: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 -mt-8 px-4 pb-20 max-w-xl mx-auto w-full relative z-20">
+      <main className="flex-1 -mt-8 px-4 pb-28 max-w-xl mx-auto w-full relative z-20">
         
-        {/* Universal Navigation Tabs with Horizontal Scroll for Mobile */}
-        <div className="bg-white rounded-2xl p-1.5 shadow-xl border border-gray-100 mb-6 flex items-center justify-start sm:justify-between gap-1.5 overflow-x-auto no-scrollbar scroll-smooth text-xs font-black">
-          <button
-            onClick={() => setActiveTab('converter')}
-            className={`flex-shrink-0 sm:flex-1 py-2.5 px-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'converter' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
-            }`}
-          >
-            <span className="text-base">🧮</span>
-            <span>{isArabic ? 'المحول' : 'Converter'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('fee')}
-            className={`flex-shrink-0 sm:flex-1 py-2.5 px-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'fee' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
-            }`}
-          >
-            <span className="text-base">💸</span>
-            <span>{isArabic ? 'حاسبة الرسوم' : 'Fee Calc'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('slip')}
-            className={`flex-shrink-0 sm:flex-1 py-2.5 px-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
-              activeTab === 'slip' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
-            }`}
-          >
-            <span className="text-base">📄</span>
-            <span>{isArabic ? 'شهادة RIP' : 'RIP Slip'}</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('favorites')}
-            className={`flex-shrink-0 sm:flex-1 py-2.5 px-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 whitespace-nowrap relative ${
-              activeTab === 'favorites' ? 'bg-[#003366] text-white shadow-md' : 'text-gray-500 hover:text-[#003366] hover:bg-gray-50'
-            }`}
-          >
-            <span className="text-base">⭐</span>
-            <span>{isArabic ? 'المفضلة' : 'Saved'}</span>
-            {savedAccounts.length > 0 && (
-              <span className="w-4.5 h-4.5 rounded-full bg-[#FFD700] text-[#003366] text-[10px] font-black flex items-center justify-center ml-0.5">
-                {savedAccounts.length}
-              </span>
-            )}
-          </button>
-        </div>
-
         {/* TAB 1: CONVERTER */}
         {activeTab === 'converter' && (
           <div className="space-y-6">
@@ -555,6 +526,43 @@ const App: React.FC = () => {
         {/* Privacy Information & Developer Info */}
         <PrivacyInfo lang={lang} />
       </main>
+
+      <nav
+        aria-label={isArabic ? 'التنقل الرئيسي' : 'Main navigation'}
+        className={`no-print fixed inset-x-0 bottom-0 z-50 border-t border-gray-100 bg-white/95 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] backdrop-blur transition-transform duration-300 ${
+          isBottomNavVisible ? 'translate-y-0' : 'translate-y-full'
+        }`}
+      >
+        <div
+          className="mx-auto grid max-w-xl grid-cols-4 gap-1 px-2 pt-2"
+          style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 0.5rem)' }}
+        >
+          {([
+            { id: 'converter', icon: '🧮', label: isArabic ? 'المحول' : 'Converter' },
+            { id: 'fee', icon: '💸', label: isArabic ? 'حاسبة الرسوم' : 'Fee Calc' },
+            { id: 'slip', icon: '📄', label: isArabic ? 'شهادة RIP' : 'RIP Slip' },
+            { id: 'favorites', icon: '⭐', label: isArabic ? 'المفضلة' : 'Saved' }
+          ] as const).map(({ id, icon, label }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setActiveTab(id)}
+              aria-current={activeTab === id ? 'page' : undefined}
+              className={`relative flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 text-[10px] font-black leading-tight transition-colors ${
+                activeTab === id ? 'text-[#003366]' : 'text-gray-500 hover:text-[#003366]'
+              }`}
+            >
+              <span className="text-lg leading-none">{icon}</span>
+              <span className="whitespace-nowrap">{label}</span>
+              {id === 'favorites' && savedAccounts.length > 0 && (
+                <span className="absolute right-1/4 top-0 h-4 min-w-4 rounded-full bg-[#FFD700] px-1 text-[10px] font-black leading-4 text-[#003366]">
+                  {savedAccounts.length}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 };
