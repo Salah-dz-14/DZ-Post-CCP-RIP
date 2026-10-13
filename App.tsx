@@ -251,32 +251,29 @@ const App: React.FC = () => {
 
           <p className="text-[#FFD700] text-sm md:text-base font-bold opacity-90 mb-3">{t.subtitle}</p>
 
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            {!isOnline ? (
-              <div className="inline-flex items-center gap-2 bg-amber-400/20 backdrop-blur-md border border-amber-400/40 text-amber-100 px-3.5 py-1.5 rounded-xl text-xs font-black">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
-                </span>
-                <span>⚡ {t.offlineReady}</span>
-              </div>
-            ) : (
-              <div className="inline-flex items-center gap-1.5 bg-emerald-500/15 backdrop-blur-md border border-emerald-400/30 text-emerald-200 px-3 py-1 rounded-xl text-[11px] font-bold">
-                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>{isArabic ? 'جاهز ومتصل - يعمل بدون إنترنت' : 'Ready & Offline Capable'}</span>
-              </div>
-            )}
+          {(!isOnline || (deferredPrompt && !isAppInstalled)) && (
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {!isOnline && (
+                <div className="inline-flex items-center gap-2 bg-amber-400/20 backdrop-blur-md border border-amber-400/40 text-amber-100 px-3.5 py-1.5 rounded-xl text-xs font-black">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                  </span>
+                  <span>⚡ {t.offlineReady}</span>
+                </div>
+              )}
 
-            {deferredPrompt && !isAppInstalled && (
-              <button
-                onClick={handleInstallClick}
-                className="inline-flex items-center gap-1.5 bg-[#FFD700] text-[#003366] hover:bg-[#ffdf33] px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg transition-all active:scale-95 border border-[#FFD700]"
-              >
-                <span>📲</span>
-                <span>{isArabic ? 'تثبيت التطبيق' : 'Install App'}</span>
-              </button>
-            )}
-          </div>
+              {deferredPrompt && !isAppInstalled && (
+                <button
+                  onClick={handleInstallClick}
+                  className="inline-flex items-center gap-1.5 bg-[#FFD700] text-[#003366] hover:bg-[#ffdf33] px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg transition-all active:scale-95 border border-[#FFD700]"
+                >
+                  <span>📲</span>
+                  <span>{isArabic ? 'تثبيت التطبيق' : 'Install App'}</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </header>
 
