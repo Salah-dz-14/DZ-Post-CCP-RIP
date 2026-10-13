@@ -1,9 +1,9 @@
-const CACHE_NAME = 'dz-post-link-cache-v2';
+const CACHE_NAME = 'dz-post-link-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/app_icon.jpg'
+  '/app_icon.png'
 ];
 
 // Install Event - Pre-cache critical application shell assets

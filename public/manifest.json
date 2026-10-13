@@ -12,25 +12,16 @@
   "categories": ["utilities", "finance"],
   "icons": [
     {
-      "src": "/app_icon.jpg",
-      "sizes": "512x512",
-      "type": "image/jpeg",
+      "src": "/app_icon.png",
+      "sizes": "768x768",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/app_icon.jpg",
-      "sizes": "512x512",
-      "type": "image/jpeg",
+      "src": "/app_icon.png",
+      "sizes": "768x768",
+      "type": "image/png",
       "purpose": "maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/app_icon.jpg",
-      "sizes": "512x512",
-      "type": "image/jpeg",
-      "form_factor": "narrow",
-      "label": "DZ Post Link Home Screen"
     }
   ]
 }

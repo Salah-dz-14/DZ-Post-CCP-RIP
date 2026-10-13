@@ -76,7 +76,7 @@ const RipCertificate: React.FC<RipCertificateProps> = ({ result, lang, accountNa
           </div>
           
           <div className="w-11 h-11 bg-white/10 rounded-xl p-1 shadow-inner border border-white/20 flex-shrink-0 overflow-hidden">
-            <img src="/app_icon.jpg" alt="Algérie Poste Logo" className="w-full h-full object-cover rounded-lg" />
+            <img src="/app_icon.png" alt="Algérie Poste Logo" className="w-full h-full object-cover rounded-lg" />
           </div>
         </div>
 

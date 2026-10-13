@@ -238,7 +238,7 @@ const App: React.FC = () => {
           <div className="flex justify-between items-center w-full mb-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden border border-white/20">
-                <img src="/app_icon.jpg" alt="DZ Post Link Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                <img src="/app_icon.png" alt="DZ Post Link Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <div className="text-right">
                 <h1 className="text-2xl font-black tracking-tight">{t.title}</h1>
