@@ -8,10 +8,10 @@ import SavedAccountCard from './components/SavedAccountCard';
 import BackupRestore from './components/BackupRestore';
 import HistoryLog from './components/HistoryLog';
 import FeeCalculator from './components/FeeCalculator';
-import RipCertificate from './components/RipCertificate';
+import RipSlipModal from './components/RipSlipModal';
 import { calculateCcpKey, calculateRipKey, getFullRip, padCcp, cleanAccountNumber, generateId, validateEnteredCcpKey } from './utils/ccp-logic';
 
-type AppTab = 'converter' | 'fee' | 'slip' | 'favorites';
+type AppTab = 'converter' | 'fee' | 'favorites';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -27,6 +27,7 @@ const App: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isAppInstalled, setIsAppInstalled] = useState(false);
   const [isBottomNavVisible, setIsBottomNavVisible] = useState(true);
+  const [slipAccount, setSlipAccount] = useState<SavedAccount | null>(null);
 
   const [savedAccounts, setSavedAccounts] = useState<SavedAccount[]>(() => {
     if (typeof window !== 'undefined') {
@@ -386,15 +387,6 @@ const App: React.FC = () => {
             {result && (
               <div className="space-y-4">
                 <ResultCard result={result} lang={lang} onSave={handleSave} />
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setActiveTab('slip')}
-                    className="flex-1 py-3 bg-amber-50 hover:bg-amber-100 text-[#003366] font-extrabold rounded-xl border border-amber-200 text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm"
-                  >
-                    <span>📄</span>
-                    <span>{isArabic ? 'معاينة وطباعة شهادة ה-RIP وكود QR' : 'View RIP Slip & QR Code'}</span>
-                  </button>
-                </div>
               </div>
             )}
 
@@ -434,20 +426,7 @@ const App: React.FC = () => {
           <FeeCalculator lang={lang} />
         )}
 
-        {/* TAB 3: PRINTABLE SLIP & QR CODE */}
-        {activeTab === 'slip' && (
-          <RipCertificate
-            result={result || {
-              ccp: '1234567890',
-              ccpKey: '45',
-              ripKey: '06',
-              fullRip: '00799999123456789006'
-            }}
-            lang={lang}
-          />
-        )}
-
-        {/* TAB 4: SAVED FAVORITES & BACKUP */}
+        {/* TAB 3: SAVED FAVORITES & BACKUP */}
         {activeTab === 'favorites' && (
           <div className="space-y-6 mt-2">
             <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
@@ -499,6 +478,7 @@ const App: React.FC = () => {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       onDelete={() => deleteAccount(acc.id)}
+                      onSlip={() => setSlipAccount(acc)}
                     />
                   ))}
                 </div>
@@ -578,20 +558,6 @@ const App: React.FC = () => {
                 ),
               },
               {
-                id: 'slip' as const,
-                label: isArabic ? 'شهادة' : 'RIP Slip',
-                icon: (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                    <rect x="8" y="12" width="3" height="3" />
-                    <rect x="13" y="12" width="3" height="3" />
-                    <rect x="8" y="17" width="3" height="3" />
-                    <rect x="13" y="17" width="3" height="3" />
-                  </svg>
-                ),
-              },
-              {
                 id: 'favorites' as const,
                 label: isArabic ? 'المفضلة' : 'Saved',
                 icon: (
@@ -654,6 +620,15 @@ const App: React.FC = () => {
           </div>
         </div>
       </nav>
+
+      {/* Saved RIP card — opens directly from Saved tab */}
+      {slipAccount && (
+        <RipSlipModal
+          account={slipAccount}
+          lang={lang}
+          onClose={() => setSlipAccount(null)}
+        />
+      )}
     </div>
   );
 };

@@ -7,9 +7,10 @@ interface SavedAccountCardProps {
   lang: Language;
   onSelect: () => void;
   onDelete: () => void;
+  onSlip: () => void;
 }
 
-const SavedAccountCard: React.FC<SavedAccountCardProps> = ({ account, lang, onSelect, onDelete }) => {
+const SavedAccountCard: React.FC<SavedAccountCardProps> = ({ account, lang, onSelect, onDelete, onSlip }) => {
   const t = TRANSLATIONS[lang];
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
@@ -108,6 +109,19 @@ const SavedAccountCard: React.FC<SavedAccountCardProps> = ({ account, lang, onSe
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
           </button>
+
+          <button
+              onClick={onSlip}
+              className="p-2 rounded-xl bg-teal-50 hover:bg-teal-500 text-teal-600 hover:text-white transition-all active:scale-95 shadow-sm border border-teal-100"
+              title={lang === 'ar' ? 'عرض بطاقة RIP و QR' : lang === 'fr' ? 'Voir la carte RIP & QR' : 'View RIP Card & QR'}
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <path d="M14 14h2v2h-2zM18 14h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z" />
+              </svg>
+            </button>
 
           <button
             onClick={handleShare}

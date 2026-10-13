@@ -11,30 +11,59 @@
 }
 
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
+  @page {
+    size: A5 landscape;
+    margin: 0;
   }
+
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
   body * {
     visibility: hidden !important;
   }
+
+  .print-modal-shell,
+  .print-modal-panel,
+  .print-modal-content {
+    display: contents !important;
+  }
+
   .print-certificate,
   .print-certificate * {
     visibility: visible !important;
   }
+
   .print-certificate {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: calc(100% - 24mm) !important;
+    max-width: 250mm !important;
+    z-index: 1 !important;
     margin: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    padding: 14mm !important;
+    border-radius: 8mm !important;
+    box-shadow: 0 4mm 12mm rgba(0, 0, 0, 0.18) !important;
+    transform: translate(-50%, -50%) !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }
+
   .no-print {
     display: none !important;
   }
+
   .print-only {
     display: block !important;
   }
@@ -47,5 +76,3 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-

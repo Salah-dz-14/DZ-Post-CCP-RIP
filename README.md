@@ -25,10 +25,10 @@ The application is built using **React 19**, **Vite**, and **Tailwind CSS**. It 
 * **Edahabia ATM (DAB/GAB) Simulator**: Calculates transaction fees for Algérie Poste ATMs (35 DA) and Interbank CIB ATMs (60 DA).
 * **Quick Preset Chips**: Fast one-tap buttons for common amounts (5,000 DA, 10,000 DA, 20,000 DA, 50,000 DA, 100,000 DA, 200,000 DA).
 
-### 4. Printable RIP Slip & Offline Vector QR Code
-* **Official Slip Preview**: Generates an Algérie Poste styled digital certificate with custom account holder name.
+### 4. Saved RIP Card & Offline Vector QR Code
+* **Saved Account Card**: Opens a styled Algérie Poste-inspired card for each saved account, including its account details and QR code.
 * **Pure Offline QR SVG**: Generates a standards-compliant, scannable QR code locally without sending account details to external APIs.
-* **One-Click Printing / PDF Export**: Built-in support for printing clean physical slips or saving as PDF via `window.print()`.
+* **Print / Save as PDF**: The saved-account card can be printed or saved as a PDF from the browser print dialog.
 
 ### 5. 100% Offline PWA & Isolated Storage
 * **Service Worker Caching**: Fully installable as a Progressive Web App (PWA) on mobile and desktop home screens. Works 100% offline without active internet.
@@ -118,7 +118,7 @@ npm run build
 │   ├── LanguageSwitcher.tsx  # Dynamic multi-lingual toggle
 │   ├── PrivacyInfo.tsx       # Safety, privacy, and developer card
 │   ├── ResultCard.tsx        # Breakdown card with copy/share buttons
-│   ├── RipCertificate.tsx    # Printable slip & offline QR code renderer
+│   ├── RipSlipModal.tsx      # Saved account card, print & offline QR code
 │   └── SavedAccountCard.tsx  # Favorite account bookmarks card
 ├── utils/               # Algorithmic & offline modules
 │   ├── ccp-logic.ts          # CCP/RIP algorithms and fee calculations
