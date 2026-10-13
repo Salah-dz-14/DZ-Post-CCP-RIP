@@ -510,113 +510,115 @@ const App: React.FC = () => {
       {/* Liquid Glass Bottom Navigation */}
       <nav
         aria-label={isArabic ? 'التنقل الرئيسي' : 'Main navigation'}
-        className={`no-print fixed inset-x-0 bottom-0 z-50 transition-transform duration-500 ease-in-out ${
+        className={`no-print fixed inset-x-0 bottom-0 z-50 transition-transform duration-500 ease-in-out pointer-events-none ${
           isBottomNavVisible ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
-        {/* Outer glow / ambient light layer */}
-        <div className="absolute inset-x-4 -top-3 h-6 rounded-full bg-[#003366]/20 blur-xl pointer-events-none" />
+        <div className="max-w-md mx-auto px-4 mb-3 pointer-events-auto">
+          {/* Outer glow / ambient light layer */}
+          <div className="absolute inset-x-8 -top-2 h-6 rounded-full bg-[#003366]/20 blur-xl pointer-events-none" />
 
-        {/* Glass container */}
-        <div
-          className="relative mx-4 mb-3 rounded-[28px] overflow-hidden"
-          style={{
-            background: 'linear-gradient(145deg, rgba(0,51,102,0.88) 0%, rgba(0,34,68,0.95) 100%)',
-            backdropFilter: 'blur(24px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-            boxShadow: '0 8px 32px rgba(0,51,102,0.45), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.2)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            paddingBottom: 'env(safe-area-inset-bottom)',
-          }}
-        >
-          {/* Inner highlight rim */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
+          {/* Glass container */}
+          <div
+            className="relative rounded-[28px] overflow-hidden"
+            style={{
+              background: 'linear-gradient(145deg, rgba(0,51,102,0.92) 0%, rgba(0,34,68,0.97) 100%)',
+              backdropFilter: 'blur(24px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+              boxShadow: '0 8px 32px rgba(0,51,102,0.45), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.2)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              paddingBottom: 'env(safe-area-inset-bottom)',
+            }}
+          >
+            {/* Inner highlight rim */}
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
-          <div className="grid grid-cols-4 gap-1 px-2 py-2 max-w-xl mx-auto">
-            {([
-              {
-                id: 'converter' as const,
-                label: isArabic ? 'المحول' : 'Converter',
-                icon: (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                    <rect x="4" y="3" width="6" height="6" rx="1" />
-                    <rect x="14" y="3" width="6" height="6" rx="1" />
-                    <rect x="4" y="13" width="6" height="6" rx="1" />
-                    <path d="M14 16h6M17 13v6" />
-                  </svg>
-                ),
-              },
-              {
-                id: 'fee' as const,
-                label: isArabic ? 'الرسوم' : 'Fees',
-                icon: (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M9 9.5A2.5 2.5 0 0 1 14.5 12a2.5 2.5 0 0 1-2.5 2.5M12 7v1M12 16v1" />
-                    <path d="M9.5 14.5S10.5 15 12 15" />
-                  </svg>
-                ),
-              },
-              {
-                id: 'favorites' as const,
-                label: isArabic ? 'المفضلة' : 'Saved',
-                icon: (
-                  <svg viewBox="0 0 24 24" fill={activeTab === 'favorites' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-                  </svg>
-                ),
-              },
-            ]).map(({ id, icon, label }) => {
-              const isActive = activeTab === id;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => setActiveTab(id)}
-                  aria-current={isActive ? 'page' : undefined}
-                  style={{
-                    transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  }}
-                  className={`relative flex flex-col items-center justify-center gap-1 rounded-[18px] px-1 py-2.5 text-[10px] font-black leading-tight ${
-                    isActive
-                      ? 'text-[#003366]'
-                      : 'text-white/55 hover:text-white/80'
-                  }`}
-                >
-                  {/* Active pill background */}
-                  {isActive && (
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-0 rounded-[18px]"
-                      style={{
-                        background: 'linear-gradient(145deg, #FFD700 0%, #FFC200 100%)',
-                        boxShadow: '0 4px 14px rgba(255,215,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4)',
-                      }}
-                    />
-                  )}
+            <div className="grid grid-cols-3 gap-1.5 p-2 w-full">
+              {([
+                {
+                  id: 'converter' as const,
+                  label: isArabic ? 'المحول' : 'Converter',
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 sm:w-6 sm:h-6">
+                      <rect x="4" y="3" width="6" height="6" rx="1" />
+                      <rect x="14" y="3" width="6" height="6" rx="1" />
+                      <rect x="4" y="13" width="6" height="6" rx="1" />
+                      <path d="M14 16h6M17 13v6" />
+                    </svg>
+                  ),
+                },
+                {
+                  id: 'fee' as const,
+                  label: isArabic ? 'الرسوم' : 'Fees',
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 sm:w-6 sm:h-6">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M9 9.5A2.5 2.5 0 0 1 14.5 12a2.5 2.5 0 0 1-2.5 2.5M12 7v1M12 16v1" />
+                      <path d="M9.5 14.5S10.5 15 12 15" />
+                    </svg>
+                  ),
+                },
+                {
+                  id: 'favorites' as const,
+                  label: isArabic ? 'المفضلة' : 'Saved',
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill={activeTab === 'favorites' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 sm:w-6 sm:h-6">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                    </svg>
+                  ),
+                },
+              ]).map(({ id, icon, label }) => {
+                const isActive = activeTab === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => setActiveTab(id)}
+                    aria-current={isActive ? 'page' : undefined}
+                    style={{
+                      transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    }}
+                    className={`relative flex flex-col items-center justify-center gap-1 rounded-[20px] px-2 py-2.5 text-[11px] font-black leading-tight ${
+                      isActive
+                        ? 'text-[#003366]'
+                        : 'text-white/60 hover:text-white/85'
+                    }`}
+                  >
+                    {/* Active pill background */}
+                    {isActive && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-0 rounded-[20px]"
+                        style={{
+                          background: 'linear-gradient(145deg, #FFD700 0%, #FFC200 100%)',
+                          boxShadow: '0 4px 14px rgba(255,215,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4)',
+                        }}
+                      />
+                    )}
 
-                  {/* Icon */}
-                  <span className="relative z-10 leading-none">{icon}</span>
+                    {/* Icon */}
+                    <span className="relative z-10 leading-none">{icon}</span>
 
-                  {/* Label */}
-                  <span className="relative z-10 whitespace-nowrap">{label}</span>
+                    {/* Label */}
+                    <span className="relative z-10 whitespace-nowrap">{label}</span>
 
-                  {/* Badge */}
-                  {id === 'favorites' && savedAccounts.length > 0 && (
-                    <span
-                      className="absolute -top-1 -right-1 h-4 min-w-4 rounded-full px-1 text-[9px] font-black leading-4 z-20"
-                      style={{
-                        background: isActive ? '#003366' : '#FFD700',
-                        color: isActive ? '#FFD700' : '#003366',
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
-                      }}
-                    >
-                      {savedAccounts.length}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
+                    {/* Badge */}
+                    {id === 'favorites' && savedAccounts.length > 0 && (
+                      <span
+                        className="absolute -top-1 end-1.5 h-4 min-w-4 rounded-full px-1 text-[9px] font-black leading-4 z-20 flex items-center justify-center"
+                        style={{
+                          background: isActive ? '#003366' : '#FFD700',
+                          color: isActive ? '#FFD700' : '#003366',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                        }}
+                      >
+                        {savedAccounts.length}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </nav>
