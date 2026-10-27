@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Language, SavedAccount, CalculationResult, HistoryItem } from './types';
 import { TRANSLATIONS } from './constants';
 import LanguageSwitcher from './components/LanguageSwitcher';
@@ -628,6 +629,7 @@ const App: React.FC = () => {
           onClose={() => setSlipAccount(null)}
         />
       )}
+      <SpeedInsights />
     </div>
   );
 };
